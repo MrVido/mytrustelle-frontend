@@ -95,7 +95,7 @@ export const LoginForm = () => {
                     <FormError 
                     message="SOMETHING NO GOOD HAPPENED" />
                     <FormSuccess  
-                    message="SOMETHING VERY GOOD HAPPENED" />
+                    message="SOMETHING VERY I believe GOOD HAPPENED" />
                     <Button
                       type="submit"
                       className="w-full">
