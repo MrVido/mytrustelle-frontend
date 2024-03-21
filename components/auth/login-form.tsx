@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react'
+import { useState, useTransition } from "react";
 import { CardWrapper } from "./card-wrapper"
 import *  as z from "zod"
 import { useForm } from "react-hook-form";
@@ -20,8 +21,12 @@ import {
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
+import { login } from "@/actions/login";
 
 export const LoginForm = () => {
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -32,7 +37,17 @@ export const LoginForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    console.log(values);
+    setError("");
+    setSuccess("");
+
+
+    startTransition(() => {
+         login(values)
+         .then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+         });
+    });
   };
 
   return (
@@ -59,6 +74,7 @@ export const LoginForm = () => {
                       <FormControl>
                         <Input 
                         {...field}
+                        disabled={isPending}
                         placeholder="Enter Email"
                         type="email"
                         />
@@ -79,6 +95,7 @@ export const LoginForm = () => {
                       <FormControl>
                         <Input 
                         {...field}
+                        disabled={isPending}
                         placeholder="Password"
                         type="password"
                         />
@@ -93,10 +110,11 @@ export const LoginForm = () => {
 
                 </div>
                     <FormError 
-                    message="SOMETHING NO GOOD HAPPENED" />
+                    message={error} />
                     <FormSuccess  
-                    message="SOMETHING VERY I believe GOOD HAPPENED" />
+                    message={success} />
                     <Button
+                    disabled={isPending}
                       type="submit"
                       className="w-full">
                         Login
