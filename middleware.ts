@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import { getToken } from 'next-auth/jwt';
 
 import authConfig from "@/auth.config";
 import {
@@ -10,7 +11,7 @@ import {
 
 const { auth } = NextAuth(authConfig);
 
-
+//the (req) is causing the entire app to fail due to an overload
 export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
