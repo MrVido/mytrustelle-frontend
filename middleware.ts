@@ -21,14 +21,14 @@ export default auth((req) => {
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
   if (isApiAuthRoute) {
-    return undefined ;
+    return  ;
   }
 
   if (isAuthRoute) {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
     }
-    return undefined;
+    return ;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
@@ -45,7 +45,7 @@ export default auth((req) => {
     ));
   }
 
-  return undefined;
+  return ;
 })
 
 // Optionally, don't invoke Middleware on some paths
